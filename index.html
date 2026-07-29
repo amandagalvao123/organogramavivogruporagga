@@ -612,10 +612,15 @@ header{background:var(--roxo);color:#fff;padding:26px 18px 30px;position:relativ
       </div>
 
       <div class="sep"></div>
-      <div class="n leafn"><div class="nbox"><div class="nb-b"><div class="nb-role">Departamento Pessoal</div><div class="nb-name">Giovana Modesto</div><div class="nb-desc">Encarregada de DP — atende a Restaurantes.</div></div></div></div>
-
-      <div class="sep"></div>
-      <div class="n leafn"><div class="nbox"><div class="nb-b"><div class="nb-role">RS</div><div class="nb-name">Vitória Tamaki</div><div class="nb-desc">Encarregada de RS — atende a Restaurantes.</div></div></div></div>
+      <div class="n open">
+        <div class="nbox"><span class="tg">−</span><div class="nb-b"><div class="nb-role">RH / DP · Restaurantes</div><div class="nb-name">Palloma</div><div class="nb-desc">Lidera o RH/DP que atende a Ragga Restaurantes.</div></div><span class="cnt">2</span></div>
+        <div class="kids">
+          <div class="peers">
+            <div class="pn"><div class="nbox"><div class="nb-b"><div class="nb-role">Encarregada de DP</div><div class="nb-name">Giovana Modesto</div><div class="nb-desc">Atende a Restaurantes.</div></div></div></div>
+            <div class="pn"><div class="nbox"><div class="nb-b"><div class="nb-role">Encarregada de RS</div><div class="nb-name">Vitória Tamaki</div><div class="nb-desc">Atende a Restaurantes.</div></div></div></div>
+          </div>
+        </div>
+      </div>
 
       <div class="sep"></div>
       <div class="n leafn"><div class="nbox"><div class="nb-b"><div class="nb-role">Tecnologia</div><div class="nb-name">Johnatan</div><div class="nb-desc">TI — sistemas da Ragga Restaurantes.</div></div></div></div>
@@ -823,12 +828,9 @@ header{background:var(--roxo);color:#fff;padding:26px 18px 30px;position:relativ
       <div class="b-desc">Compras (com Maria Eduarda) e gerência da Vespa Distribuidora (Mari, Geci, 2 motoristas).</div>
     </div></div>
     <div class="cell"><div class="box" style="--vc:var(--louro)">
-      <div class="b-role">Departamento Pessoal</div>
-      <div class="b-name">Giovana Modesto</div>
-    </div></div>
-    <div class="cell"><div class="box" style="--vc:var(--louro)">
-      <div class="b-role">RS</div>
-      <div class="b-name">Vitória Tamaki</div>
+      <div class="b-role">RH / DP · Restaurantes</div>
+      <div class="b-name">Palloma</div>
+      <div class="b-desc">Time: Giovana Modesto (DP) e Vitória Tamaki (RS).</div>
     </div></div>
     <div class="cell"><div class="box" style="--vc:var(--louro)">
       <div class="b-role">TI · Sistemas</div>
@@ -970,8 +972,9 @@ header{background:var(--roxo);color:#fff;padding:26px 18px 30px;position:relativ
 {"id":"compras","parent":"v-gestao","color":"louro","role":"Gerente de Compras · Restaurantes","name":"Amanda Vespa","desc":"Cadeira dentro da Gestão."},
 {"id":"madu","parent":"compras","color":"louro","role":"Encarregada de Compras","name":"Maria Eduarda","desc":"Na Gestão, cuida das compras da Restaurantes."},
 {"id":"an-compras","parent":"madu","color":"louro","role":"Analista de Compras","name":"Vaga em aberto","desc":"Posição a preencher — reporta à Encarregada de Compras.","dash":1,"link":"dashed"},
-{"id":"dp","parent":"v-gestao","color":"louro","role":"Encarregada de DP","name":"Giovana Modesto","desc":"Atende a Restaurantes."},
-{"id":"rs","parent":"v-gestao","color":"louro","role":"Encarregada de RS","name":"Vitória Tamaki","desc":"Atende a Restaurantes."},
+{"id":"palloma","parent":"v-gestao","color":"louro","role":"RH / DP · Restaurantes","name":"Palloma","desc":"Lidera o RH/DP que atende a Ragga Restaurantes."},
+{"id":"dp","parent":"palloma","color":"louro","role":"Encarregada de DP","name":"Giovana Modesto","desc":"Atende a Restaurantes."},
+{"id":"rs","parent":"palloma","color":"louro","role":"Encarregada de RS","name":"Vitória Tamaki","desc":"Atende a Restaurantes."},
 {"id":"ti","parent":"v-gestao","color":"louro","role":"TI","name":"Johnatan","desc":"Sistemas da Ragga Restaurantes."},
 {"id":"ia","parent":"v-gestao","color":"louro","role":"Devs de IA","name":"Gustavo · Sandro","desc":"Desenvolvimento de IA na Ragga Gestão."},
 
