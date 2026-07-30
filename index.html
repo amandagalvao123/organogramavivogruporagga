@@ -1175,6 +1175,24 @@ function autoLayoutAll(fit){
   DATA.autoDone=true;
 }
 
+function layoutSubtree(root){
+  if(typeof root.x!=='number'){root.x=0;root.y=0}
+  const depth={},maxH={};
+  (function dfs(n,d){depth[n.id]=d;const m=measure(n.id);maxH[d]=Math.max(maxH[d]||0,m.h);
+    if(!n.collapsed)kids(n.id).filter(k=>!isHidden(k)).forEach(k=>dfs(k,d+1));})(root,0);
+  const dmax=Math.max(...Object.values(depth));
+  const rowY=[root.y];
+  for(let d=1;d<=dmax;d++)rowY[d]=rowY[d-1]+(maxH[d-1]||90)+GY;
+  function w(n){const ks=n.collapsed?[]:kids(n.id).filter(k=>!isHidden(k));
+    if(!ks.length)return nodeW(n)+GX;
+    return Math.max(nodeW(n)+GX,ks.reduce((s,k)=>s+w(k),0));}
+  function pl(n,x0){const wt=w(n),d=depth[n.id];
+    if(n!==root){n.x=x0+wt/2-nodeW(n)/2;n.y=rowY[d];}
+    let cx=x0;
+    if(!n.collapsed)kids(n.id).filter(k=>!isHidden(k)).forEach(k=>{pl(k,cx);cx+=w(k)});}
+  pl(root, root.x + nodeW(root)/2 - w(root)/2);
+}
+
 function placeFloatKids(p){
   const ks=kids(p.id).filter(c=>!isHidden(c));
   if(!ks.length||p.collapsed)return;
@@ -1282,7 +1300,7 @@ stage.addEventListener('pointermove',e=>{
 stage.addEventListener('pointerup',e=>{
   ptrs.delete(e.pointerId);pinchD=0;
   const card=e.target.closest&&e.target.closest('.nd');
-  if(e.target.dataset&&e.target.dataset.col&&card){const n=byId(card.dataset.id);n.collapsed=!n.collapsed;if(!manualMoved){autoLayoutAll(false);}else{render();}return}
+  if(e.target.dataset&&e.target.dataset.col&&card){const n=byId(card.dataset.id);n.collapsed=!n.collapsed;render();if(!n.collapsed){layoutSubtree(n);positionAll();}return}
   if(dragInfo&&moved)manualMoved=true;
   if(!moved&&card&&!linking){selectNode(card.dataset.id)}
   else if(!moved&&!card&&!linking){selectNode(null)}
