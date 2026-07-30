@@ -898,8 +898,8 @@ header{background:var(--roxo);color:#fff;padding:26px 18px 30px;position:relativ
   <div class="bigs">
     <div class="big" style="--bc:#2D204E"><div class="bl">Colaboradores</div><div class="bn" id="bnColab">0</div><div class="bs" id="bsColab"></div></div>
     <div class="big" style="--bc:#B81D22"><div class="bl">Vagas em aberto</div><div class="bn" id="bnVagas">0</div><div class="bs">posições a preencher</div></div>
-    <div class="big" style="--bc:#D4A011"><div class="bl">Vagas pausadas</div><div class="bn" id="bnPaus">0</div><div class="bs">temporariamente suspensas</div></div>
-    <div class="big" style="--bc:#2B4899"><div class="bl">Total de postos</div><div class="bn" id="bnPostos">0</div><div class="bs">colaboradores + vagas</div></div>
+    <div class="big" style="--bc:#D4A011"><div class="bl">Vagas pausadas</div><div class="bn" id="bnPaus">0</div><div class="bs">fora dos totalizadores</div></div>
+    <div class="big" style="--bc:#2B4899"><div class="bl">Total de postos</div><div class="bn" id="bnPostos">0</div><div class="bs">colaboradores + vagas abertas</div></div>
   </div>
 
   <div class="paineis">
@@ -973,18 +973,20 @@ header{background:var(--roxo);color:#fff;padding:26px 18px 30px;position:relativ
 
   window.dashRender = function(){
     const F = filtrar();
-    const colab = F.filter(r=>r.s==='ok').length;
-    const vagas = F.filter(r=>r.s==='vaga').length;
+    // pausadas ficam fora dos totalizadores — só entram se o filtro de situação pedir por elas
+    const FA = $('fSit').value==='pausada' ? F : F.filter(r=>r.s!=='pausada');
+    const colab = FA.filter(r=>r.s==='ok').length;
+    const vagas = FA.filter(r=>r.s==='vaga').length;
     const paus  = F.filter(r=>r.s==='pausada').length;
     $('bnColab').textContent = colab;
     $('bnVagas').textContent = vagas;
     $('bnPaus').textContent = paus;
-    $('bnPostos').textContent = F.length;
+    $('bnPostos').textContent = FA.length;
     const q = $('fCargo').value.trim();
     $('bsColab').textContent = q ? `no filtro "${q}"` : 'pessoas trabalhando';
 
     const porLoja={}, porCargo={}, porTurno={}, porMarca={};
-    F.forEach(r=>{
+    FA.forEach(r=>{
       porLoja[r.l]=(porLoja[r.l]||0)+1;
       porCargo[r.c]=(porCargo[r.c]||0)+1;
       porTurno[r.t]=(porTurno[r.t]||0)+1;
@@ -999,15 +1001,15 @@ header{background:var(--roxo);color:#fff;padding:26px 18px 30px;position:relativ
     $('pTurnos').innerHTML = ['Diurno','Noturno','Único'].filter(t=>porTurno[t]).map(t=>
       `<div class="turno-card"><div class="tn">${porTurno[t]||0}</div><div class="tl">${t}</div></div>`).join('') || '<div class="vazio">—</div>';
 
-    const lista = F.slice().sort((a,b)=> (a.s>b.s?1:a.s<b.s?-1:0) || (a.l>b.l?1:-1));
-    $('hLista').textContent = F.length + ' postos';
+    const lista = FA.slice().sort((a,b)=> (a.s>b.s?1:a.s<b.s?-1:0) || (a.l>b.l?1:-1));
+    $('hLista').textContent = FA.length + ' postos';
     $('pLista').innerHTML = lista.slice(0,limite).map(r=>{
       const cls = r.s==='vaga'?' vg':(r.s==='pausada'?' pz':'');
       const nome = r.n || (r.s==='pausada'?'Vaga pausada':'Vaga em aberto');
       const obs = r.o ? ` · ${r.o}` : '';
       return `<div class="pessoa${cls}"><span class="pnm">${nome}</span><span class="pcg">${r.c}${obs}</span><span class="plj">${r.l} · ${r.t}</span></div>`;
     }).join('') || '<div class="vazio">Nenhum resultado para esses filtros</div>';
-    $('btnMais').classList.toggle('hidden', F.length <= limite);
+    $('btnMais').classList.toggle('hidden', FA.length <= limite);
   };
 
   dashLojaOpts();
